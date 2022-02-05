@@ -1,6 +1,8 @@
 import React from "react";
 
-const UrlTable = () => {
+import Url from "./Url";
+
+const UrlTable = ({ showUrl }) => {
   return (
     <section className="my-4 mx-auto w-4/6 p-4">
       <div>
@@ -9,6 +11,9 @@ const UrlTable = () => {
             <p className="flex w-2/5 justify-center">Original</p>
             <p className="flex w-2/5 justify-center">Shortened</p>
           </li>
+          {showUrl?.map(url => {
+            return <Url {...url} key={url.id} />;
+          })}
         </ul>
       </div>
     </section>
