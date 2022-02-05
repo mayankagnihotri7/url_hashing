@@ -22,16 +22,14 @@ RSpec.describe HashUrl do
     expect(another_lookup_code).not_to eql(lookup_code)
   end
 
-  it "gives same URL same lookup code" do
+  it "generates a  link record with a unique lookup code" do
     url = 'http://www.favoritewebsite.com/articles/how-to-cook'
 
     hash_url = HashUrl.new(url)
-    lookup_code = hash_url.lookup_code
+    link = hash_url.generate_short_link
+    expect(link.valid?).to be(true)
 
-    url = 'http://www.favoritewebsite.com/articles/how-to-cook'
-
-    another_hash_url = HashUrl.new(url)
-    another_lookup_code = another_hash_url.lookup_code
-    expect(another_lookup_code).to eql(lookup_code)
+    link2 = hash_url.generate_short_link
+    expect(link2.valid?).to be(true)
   end
 end
