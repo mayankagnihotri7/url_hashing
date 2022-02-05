@@ -30,8 +30,16 @@ RSpec.describe HashUrl do
     hash_url = HashUrl.new(url)
     link = hash_url.generate_short_link
     expect(link.valid?).to be(true)
+  end
 
-    link2 = hash_url.generate_short_link
-    expect(link2.valid?).to be(true)
+  it "is invalid if two urls are not unique" do
+    url = "http://www.favoritewebsite.com/articles/how-to-cook"
+
+    hash_url = HashUrl.new(url)
+    link = hash_url.generate_short_link
+    expect(link.valid?).to be(true)
+
+    another_lookup_code = hash_url.lookup_code
+    expect(link.valid?).not_to eql(false)
   end
 end
