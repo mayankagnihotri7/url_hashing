@@ -2,6 +2,7 @@
 
 class LinksController < ApplicationController
   protect_from_forgery
+  before_action :find_link, only: %i[show]
 
   def index
     url = Link.all
@@ -19,13 +20,23 @@ class LinksController < ApplicationController
   end
 
   def show
-    @link = Link.find_by(lookup_code: params[:lookup_code])
-    redirect_to "#{@link.original_url}"
+    if @link.present?
+      redirect_to "#{@link.original_url}"
+      @link.destroy
+    else
+      render status: :unprocessable_entity, json: {
+        error: "The link no longer exists. Please create a new link"
+      }
+    end
   end
 
   private
 
     def url_params
       params.require(:link).permit(:original_url)
+    end
+
+    def find_link
+      @link = Link.find_by(lookup_code: params[:lookup_code])
     end
 end
